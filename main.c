@@ -18,11 +18,13 @@ void init_clocks()
 
 void init_wdt_timer();
 {
-    WDTCTL = WDT_ADLY_250;              // WDT as interval timer
-    IE1 |= WDTIE;                       // Enable WDT interrupt
+    // Enable WDT timer as interval from ACLK
+    WDTCTL = WDT_ADLY_250;
+	// And enable WDT interrupt
+    IE1 |= WDTIE;
 }
 
-void main()
+int main()
 {
     init_clocks();
     init_wdt_timer();
@@ -30,6 +32,10 @@ void main()
     // P1.0 and 1.6 as outputs and output 0
     P1DIR = 0x41;
     P1OUT = 0;
+	
+	// Enable global interrupts (and LPM if needed)
+	//_BIS_SR(LPM0_bits + GIE);
+	_BIS_SR(GIE);
 
     while(1)
     {
@@ -39,5 +45,17 @@ void main()
         P1OUT ^= GREEN_LED;
         __delay_cycles(50000);
     }
+	return 0;
 }
+
+
+__attribute__( (interrupt (WDT_VECTOR)) )
+void WDT_ISR()
+{
+    //WTD interrupt ISR
+	// Just toggling red led to show interrupt occuring
+	P1OUT ^= RED_LED;
+}
+
+
 
