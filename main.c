@@ -1,9 +1,11 @@
 #include "msp430.h"
 
+#define RED_LED BIT0
+#define GREEN_LED BIT6
 
 void init_clocks()
 {
-    //Disable WDT
+    // Disable WDT
     WDTCTL = WDTPW + WDTHOLD; // watchdog timer setup
     // Set the calibrating things for the DCO
     BCSCTL1 = CALBC1_1MHZ; // Set range
@@ -14,20 +16,28 @@ void init_clocks()
     BCSCTL2 |= SELM_0 + DIVM_3;
 }
 
+void init_wdt_timer();
+{
+    WDTCTL = WDT_ADLY_250;              // WDT as interval timer
+    IE1 |= WDTIE;                       // Enable WDT interrupt
+}
 
-void main(void)
+void main()
 {
     init_clocks();
-
+    init_wdt_timer();
+	
     // P1.0 and 1.6 as outputs and output 0
     P1DIR = 0x41;
     P1OUT = 0;
 
     while(1)
     {
-        P1OUT = 0x01;
+	    // Just toggling green led to show while loop
+        P1OUT ^= GREEN_LED;
         __delay_cycles(50000);
-        P1OUT = 0x40;
+        P1OUT ^= GREEN_LED;
         __delay_cycles(50000);
     }
 }
+
