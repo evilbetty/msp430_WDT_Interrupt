@@ -16,7 +16,7 @@ void init_clocks()
     BCSCTL2 |= SELM_0 + DIVM_3;
 }
 
-void init_wdt_timer();
+void init_wdt_timer()
 {
     // Enable WDT timer as interval from ACLK
     WDTCTL = WDT_ADLY_250;
