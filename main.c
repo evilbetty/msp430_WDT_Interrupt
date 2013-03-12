@@ -6,8 +6,8 @@
 
 void init_clocks()
 {
-    // Disable WDT
-    WDTCTL = WDTPW + WDTHOLD; // watchdog timer setup
+    // Disable WDT (Can this stay when using WDT as timer?)
+    //WDTCTL = WDTPW + WDTHOLD; // watchdog timer setup
     // Set the calibrating things for the DCO
     BCSCTL1 = CALBC1_1MHZ; // Set range
     DCOCTL = CALDCO_1MHZ; // Set DCO step + modulation
