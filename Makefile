@@ -1,7 +1,7 @@
 # makfile configuration
-NAME            = syshandler_test
+NAME            = msp430_WDT_Interrupt
 OBJECTS         = main.o
-CPU             = msp430g2553
+CPU             = msp430g2452
 
 CFLAGS          = -mmcu=${CPU} -O2 -Wall -g
 
